@@ -1,0 +1,372 @@
+/* Estilos principales de la aplicación de sorteo */
+
+/* Animaciones de las balotas */
+@keyframes spin-3d {
+  0% { transform: rotateX(0deg) rotateY(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6),
+                0 0 60px rgba(255, 215, 0, 0.4),
+                inset 0 0 20px rgba(255, 215, 0, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.9),
+                0 0 100px rgba(255, 215, 0, 0.6),
+                inset 0 0 30px rgba(255, 215, 0, 0.5);
+  }
+}
+
+@keyframes winner-celebration {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+    box-shadow: 0 0 40px rgba(46, 204, 113, 0.8);
+  }
+  25% { 
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 0 60px rgba(46, 204, 113, 1);
+  }
+  75% { 
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0 60px rgba(46, 204, 113, 1);
+  }
+}
+
+@keyframes no-winner-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(231, 76, 60, 0.8);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shine {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Contenedor de balotas */
+.ball-container {
+  perspective: 2000px;
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Barra glass de fondo */
+.glass-bar-container {
+  position: relative;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.glass-bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    0 0 80px rgba(255, 255, 255, 0.03);
+  z-index: 0;
+  opacity: 0.8;
+}
+
+/* Estilos de las balotas 3D */
+.ball {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  position: relative;
+  background: linear-gradient(145deg, 
+    #ffffff 0%, 
+    #f8f9fa 25%,
+    #ffffff 50%, 
+    #e9ecef 75%,
+    #ffffff 100%
+  );
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.4),
+    0 5px 15px rgba(0, 0, 0, 0.3),
+    inset 0 -8px 20px rgba(0, 0, 0, 0.15),
+    inset 0 8px 20px rgba(255, 255, 255, 0.7),
+    inset -5px -5px 15px rgba(0, 0, 0, 0.1),
+    inset 5px 5px 15px rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.ball::before {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 12%;
+  width: 45%;
+  height: 45%;
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(255, 255, 255, 0.95) 0%, 
+    rgba(255, 255, 255, 0.6) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(3px);
+  z-index: 10;
+}
+
+.ball::after {
+  content: '';
+  position: absolute;
+  bottom: 15%;
+  right: 15%;
+  width: 25%;
+  height: 25%;
+  background: radial-gradient(circle, 
+    rgba(0, 0, 0, 0.1) 0%, 
+    transparent 60%
+  );
+  border-radius: 50%;
+  filter: blur(4px);
+}
+
+.ball .ball-number {
+  position: relative;
+  z-index: 20;
+  text-shadow: 
+    1px 1px 2px rgba(255, 255, 255, 0.3),
+    0 0 3px rgba(255, 255, 255, 0.2);
+  font-weight: 900;
+  color: #1a1a1a;
+  /* Ajustar tamaño para letras y números */
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ball.spinning {
+  animation: spin-3d 0.12s linear infinite;
+  box-shadow: 
+    0 0 60px currentColor,
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 5px 20px currentColor,
+    inset 0 -8px 20px rgba(0, 0, 0, 0.2),
+    inset 0 8px 20px rgba(255, 255, 255, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Colores individuales para cada balota girando - TODAS AZULES */
+.ball-container[data-index="0"] .ball.spinning {
+  background: linear-gradient(145deg, #3498db 0%, #2980b9 50%, #3498db 100%) !important;
+  color: #3498db;
+}
+
+.ball-container[data-index="1"] .ball.spinning {
+  background: linear-gradient(145deg, #3498db 0%, #2980b9 50%, #3498db 100%) !important;
+  color: #3498db;
+}
+
+.ball-container[data-index="2"] .ball.spinning {
+  background: linear-gradient(145deg, #3498db 0%, #2980b9 50%, #3498db 100%) !important;
+  color: #3498db;
+}
+
+.ball-container[data-index="3"] .ball.spinning {
+  background: linear-gradient(145deg, #3498db 0%, #2980b9 50%, #3498db 100%) !important;
+  color: #3498db;
+}
+
+.ball-container[data-index="4"] .ball.spinning {
+  background: linear-gradient(145deg, #3498db 0%, #2980b9 50%, #3498db 100%) !important;
+  color: #3498db;
+}
+
+.ball-container[data-index="5"] .ball.spinning {
+  background: linear-gradient(145deg, #3498db 0%, #2980b9 50%, #3498db 100%) !important;
+  color: #3498db;
+}
+
+.ball-container[data-index="6"] .ball.spinning {
+  background: linear-gradient(145deg, #e91e63 0%, #c2185b 50%, #e91e63 100%) !important;
+  color: #e91e63;
+}
+
+.ball-container[data-index="7"] .ball.spinning {
+  background: linear-gradient(145deg, #ff5722 0%, #e64a19 50%, #ff5722 100%) !important;
+  color: #ff5722;
+}
+
+.ball-container[data-index="8"] .ball.spinning {
+  background: linear-gradient(145deg, #00bcd4 0%, #0097a7 50%, #00bcd4 100%) !important;
+  color: #00bcd4;
+}
+
+.ball-container[data-index="9"] .ball.spinning {
+  background: linear-gradient(145deg, #ffc107 0%, #ffa000 50%, #ffc107 100%) !important;
+  color: #ffc107;
+}
+
+.ball.spinning .ball-number {
+  background: linear-gradient(180deg, #ecf0f1 0%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 
+    2px 2px 6px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+.ball.stopped {
+  animation: pulse-glow 1s ease-in-out 3;
+  transform: scale(1.3) !important;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ball.stopped .ball-number {
+  color: #000000;
+  font-weight: 900;
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.4);
+}
+
+.ball.winner {
+  animation: winner-celebration 0.6s ease-in-out 5;
+  background: linear-gradient(145deg, #2ecc71 0%, #27ae60 50%, #2ecc71 100%) !important;
+}
+
+.ball.no-winner {
+  animation: no-winner-pulse 0.6s ease-in-out 3;
+  background: linear-gradient(145deg, #e74c3c 0%, #c0392b 50%, #e74c3c 100%) !important;
+}
+/* Estilos de fuegos artificiales */
+.fireworks-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.firework {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: firework-explode 1s ease-out forwards;
+}
+
+@keyframes firework-explode {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+.firework-trail {
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to top, transparent, var(--color));
+  animation: trail-up 0.8s ease-out forwards;
+}
+
+@keyframes trail-up {
+  0% {
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+/* Efectos adicionales */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  z-index: 9998;
+  animation: confetti-fall 3s linear forwards;
+}
+/* Estilos del historial */
+.history-item {
+  transition: all 0.3s ease;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  padding: 10px 12px !important;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.history-item:hover {
+  animation: shine 1.5s ease-in-out infinite;
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.history-item.winner-item {
+  background: linear-gradient(90deg, 
+    rgba(46, 204, 113, 0.15) 0%, 
+    rgba(46, 204, 113, 0.25) 50%, 
+    rgba(46, 204, 113, 0.15) 100%);
+  border-left: 3px solid #2ecc71;
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
+}
+
+.history-item.no-winner-item {
+  background: linear-gradient(90px, 
+    rgba(231, 76, 60, 0.15) 0%, 
+    rgba(231, 76, 60, 0.25) 50%, 
+    rgba(231, 76, 60, 0.15) 100%);
+  border-left: 3px solid #e74c3c;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+}
+
+/* Spinner de carga */
+.loading-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin-3d 1s linear infinite;
+}

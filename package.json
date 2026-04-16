@@ -1,0 +1,35 @@
+{
+  "name": "sorteo-jardines-renacer",
+  "version": "1.0.0",
+  "description": "Sistema profesional de sorteo con TypeScript",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc && node scripts/copy-files.js",
+    "vercel-build": "npm run build",
+    "dev": "tsc --watch",
+    "start": "npm run build && npm run serve",
+    "serve": "npx http-server dist -p 8080 -c-1 -o",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": [
+    "lottery",
+    "sorteo",
+    "typescript",
+    "professional"
+  ],
+  "author": "Jardines del Renacer",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "jsdom": "^29.0.2",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.2",
+    "vitest": "^4.1.4"
+  }
+}
