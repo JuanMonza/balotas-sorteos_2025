@@ -7,6 +7,9 @@ dist/
 *.js.map
 *.d.ts
 
+# Allow build helper script
+!scripts/copy-files.js
+
 # Environment variables
 .env
 .env.local
