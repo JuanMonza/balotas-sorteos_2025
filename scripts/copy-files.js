@@ -22,17 +22,18 @@ async function main() {
   const projectRoot = path.resolve(__dirname, '..');
   const distPath = path.join(projectRoot, 'dist');
 
-  if (fsSync.rm) {
-    await fs.rm(distPath, { recursive: true, force: true });
-  } else {
-    await fs.rmdir(distPath, { recursive: true });
+  if (!fsSync.existsSync(distPath)) {
+    await fs.mkdir(distPath, { recursive: true });
   }
-  await fs.mkdir(distPath, { recursive: true });
 
   const publicPath = path.join(projectRoot, 'public');
   const targetPublicPath = path.join(distPath, 'public');
-  await copyDirectory(publicPath, targetPublicPath);
 
+  if (fsSync.existsSync(targetPublicPath)) {
+    await fs.rm(targetPublicPath, { recursive: true, force: true });
+  }
+
+  await copyDirectory(publicPath, targetPublicPath);
   await fs.copyFile(path.join(projectRoot, 'index.html'), path.join(distPath, 'index.html'));
 }
 
