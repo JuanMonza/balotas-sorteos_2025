@@ -61,7 +61,7 @@ export class LotteryService {
   /**
    * Genera números para el sorteo
    */
-  generateLotteryNumbers(): number[] {
+  generateLotteryNumbers(): (number | string)[] {
     const config = this.configService.getConfig();
     const forceNumber = config.force_number?.trim();
 
@@ -78,7 +78,7 @@ export class LotteryService {
    * Inicia el sorteo
    */
   async startLottery(
-    onNumbersGenerated: (numbers: number[]) => void,
+    onNumbersGenerated: (numbers: (number | string)[]) => void,
     onComplete: (drawnNumber: string) => void,
   ): Promise<void> {
     const canStartCheck = this.canStartLottery();

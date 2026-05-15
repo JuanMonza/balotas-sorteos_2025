@@ -14,8 +14,8 @@ export class ValidationMiddleware {
     if (!number || typeof number !== 'string') {
       return false;
     }
-    // Aceptar cualquier combinación de letras y números, de 1 a 10 caracteres
-    return /^[A-Za-z0-9]{1,10}$/.test(number.trim());
+    // Aceptar cualquier combinación de letras y números, de 1 a 8 caracteres
+    return /^[A-Za-z0-9]{1,8}$/.test(number.trim());
   }
 
   /**
@@ -29,7 +29,7 @@ export class ValidationMiddleware {
     if (!record.numero_sorteo) {
       errors.push('El número de sorteo es requerido');
     } else if (!this.validateLotteryNumber(record.numero_sorteo)) {
-      errors.push('El número de sorteo debe contener solo letras y números (1-10 caracteres)');
+      errors.push('El número de sorteo debe contener solo letras y números (1-8 caracteres)');
     }
 
     if (record.es_ganador === undefined || record.es_ganador === null) {
@@ -84,7 +84,7 @@ export class ValidationMiddleware {
       config.force_number.trim() !== '' &&
       !this.validateLotteryNumber(config.force_number)
     ) {
-      errors.push('El número forzado debe ser alfanumérico (1-10 caracteres) o estar vacío');
+      errors.push('El número forzado debe ser alfanumérico (1-8 caracteres) o estar vacío');
     }
 
     return {

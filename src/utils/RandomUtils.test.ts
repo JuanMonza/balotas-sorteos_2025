@@ -6,6 +6,10 @@ describe('RandomUtils', () => {
     expect(RandomUtils.parseNumberString('123456')).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
+  it('should parse alphanumeric values without losing letters', () => {
+    expect(RandomUtils.parseNumberString('a123b')).toEqual(['A', 1, 2, 3, 'B']);
+  });
+
   it('should validate numbers within range', () => {
     expect(RandomUtils.validateNumbersInRange([1, 2, 3], [2, 2, 3])).toBe(true);
     expect(RandomUtils.validateNumbersInRange([1, 4, 3], [2, 2, 3])).toBe(false);

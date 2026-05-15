@@ -18,7 +18,7 @@ export class RandomUtils {
   }
 
   /**
-   * Genera un número de 6 dígitos aleatorio
+   * Genera un número aleatorio con la cantidad de dígitos indicada por los rangos.
    */
   static generateSixDigitNumber(ranges: readonly number[]): string {
     const numbers = this.generateRandomNumbers(ranges);
@@ -26,10 +26,13 @@ export class RandomUtils {
   }
 
   /**
-   * Parsea un string de 6 dígitos a array de números
+   * Parsea un string alfanumérico a array de valores para balotas.
    */
-  static parseNumberString(numberString: string): number[] {
-    return numberString.split('').map((n) => parseInt(n, 10));
+  static parseNumberString(numberString: string): (number | string)[] {
+    return numberString.split('').map((value) => {
+      const numericValue = parseInt(value, 10);
+      return Number.isNaN(numericValue) ? value.toUpperCase() : numericValue;
+    });
   }
 
   /**

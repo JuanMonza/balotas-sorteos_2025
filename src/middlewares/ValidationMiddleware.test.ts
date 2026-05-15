@@ -24,7 +24,7 @@ describe('ValidationMiddleware', () => {
     const result = ValidationMiddleware.validateConfig({
       background_color: 'not-a-color',
       font_size: 100,
-      force_number: '12345678901',
+      force_number: '123456789',
     });
 
     expect(result.isValid).toBe(false);

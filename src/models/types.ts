@@ -154,9 +154,9 @@ export interface GlobalWindow extends Window {
  */
 export const CONSTANTS = {
   MAX_RECORDS: 999,
-  BALL_RANGES: [1, 9, 9, 9, 9, 9, 9, 9, 9, 9] as const,
+  BALL_RANGES: [9, 9, 9, 9, 9, 9, 9, 9] as const,
   SPIN_INTERVAL: 50,
-  STOP_TIMES: [5000, 8000, 11000, 14000, 17000, 20000, 23000, 26000, 29000, 32000] as const,
+  STOP_TIMES: [5000, 8000, 11000, 14000, 17000, 20000, 23000, 26000] as const,
   ANIMATION_DURATION: 3000,
   RESULT_DISPLAY_DURATION: 5000,
 } as const;

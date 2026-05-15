@@ -80,10 +80,11 @@ export class LotteryController {
 
       // Convertir número del ganador a array de dígitos
       const winnerDigits = this.convertNumberToDigits(winner.numero);
+      const drawnNumber = winnerDigits.join('');
 
       await this.lotteryService.startLottery(
         () => this.handleNumbersGenerated(winnerDigits),
-        () => this.handleLotteryComplete(winner.numero, winner.record),
+        () => this.handleLotteryComplete(drawnNumber, winner.record),
       );
     } catch (error) {
       const message = ErrorMiddleware.createUserFriendlyMessage(error);
@@ -103,14 +104,16 @@ export class LotteryController {
     // Separar en caracteres individuales
     const chars = cleanId.split('');
     
-    // Si tiene menos de 10 caracteres, rellenar con ceros a la izquierda
-    while (chars.length < 10) {
+    const ballCount = CONSTANTS.BALL_RANGES.length;
+
+    // Si tiene menos caracteres que balotas, rellenar con ceros a la izquierda
+    while (chars.length < ballCount) {
       chars.unshift('0');
     }
     
-    // Si tiene más de 10 caracteres, tomar los últimos 10
-    if (chars.length > 10) {
-      return chars.slice(-10);
+    // Si tiene más caracteres que balotas, tomar los últimos caracteres
+    if (chars.length > ballCount) {
+      return chars.slice(-ballCount);
     }
     
     // Convertir números string a números, mantener letras como string
@@ -142,15 +145,38 @@ export class LotteryController {
       this.ballIntervals.set(index, interval);
     });
 
-    // Programar la detención de cada balota
+    const revealOrder = this.getSuspenseRevealOrder(finalValues.length);
+
+    // Programar la detención de cada balota: primera, última y hacia el centro
     CONSTANTS.STOP_TIMES.forEach((time, index) => {
       setTimeout(() => {
-        const ballIndex = 9 - index; // Detener de derecha a izquierda (índice 9 a 0)
+        const ballIndex = revealOrder[index];
         if (this.balls && this.balls[ballIndex]) {
           this.stopBall(this.balls[ballIndex], finalValues[ballIndex], ballIndex);
         }
       }, time);
     });
+  }
+
+  /**
+   * Ordena la revelación desde los extremos hacia el centro.
+   * Ejemplo con 8 balotas: 0, 7, 1, 6, 2, 5, 3, 4.
+   */
+  private getSuspenseRevealOrder(ballCount: number): number[] {
+    const order: number[] = [];
+    let left = 0;
+    let right = ballCount - 1;
+
+    while (left <= right) {
+      order.push(left);
+      if (left !== right) {
+        order.push(right);
+      }
+      left++;
+      right--;
+    }
+
+    return order;
   }
 
   /**

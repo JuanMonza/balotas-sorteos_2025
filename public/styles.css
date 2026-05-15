@@ -215,16 +215,6 @@
   color: #ff5722;
 }
 
-.ball-container[data-index="8"] .ball.spinning {
-  background: linear-gradient(145deg, #00bcd4 0%, #0097a7 50%, #00bcd4 100%) !important;
-  color: #00bcd4;
-}
-
-.ball-container[data-index="9"] .ball.spinning {
-  background: linear-gradient(145deg, #ffc107 0%, #ffa000 50%, #ffc107 100%) !important;
-  color: #ffc107;
-}
-
 .ball.spinning .ball-number {
   background: linear-gradient(180deg, #ecf0f1 0%, #ffffff 100%);
   -webkit-background-clip: text;
