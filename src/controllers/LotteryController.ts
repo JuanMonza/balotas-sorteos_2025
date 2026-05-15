@@ -242,7 +242,7 @@ export class LotteryController {
     // El número ya viene del Excel, siempre es ganador
     DOMUtils.setInnerHTML(this.resultMessage, 
       `<div class="text-4xl font-bold mb-4">${drawnNumber}</div>
-       <div class="text-2xl mb-4" style="color: ${config.winner_color};">🎉 ¡GANADOR!</div>
+       <div class="text-2xl mb-4" style="color: ${config.winner_color};">¡GANADOR!</div>
        <p class="text-lg">Seleccionado de la base de datos</p>`
     );
     DOMUtils.setStyles(this.resultMessage, { opacity: '1' });
@@ -284,7 +284,7 @@ export class LotteryController {
    */
   private showSuccessMessage(isWinner: boolean): void {
     const config = this.configService.getConfig();
-    const message = isWinner ? `🎉 ${config.winner_label} 🎉` : config.no_winner_label;
+    const message = isWinner ? config.winner_label : config.no_winner_label;
     const color = isWinner ? config.winner_color : config.no_winner_color;
     this.showResultMessage(message, color);
     

@@ -12,7 +12,6 @@ import { HistoryController } from './controllers/HistoryController';
 import { ExcelController } from './controllers/ExcelController';
 import { LotteryRecord, LotteryConfig } from './models/types';
 import { DOMUtils } from './utils/DOMUtils';
-import { ColorUtils } from './utils/ColorUtils';
 import { ErrorMiddleware } from './middlewares/ErrorMiddleware';
 
 /**
@@ -197,10 +196,10 @@ class App {
         backgroundColor: 'transparent',
       });
     } else {
-      const backgroundColor = config.background_color;
-      const darkerColor = ColorUtils.adjustColor(backgroundColor, -30);
       DOMUtils.setStyles(element, {
-        background: `linear-gradient(135deg, ${backgroundColor} 0%, ${darkerColor} 100%)`,
+        background: 'transparent',
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
         backgroundSize: 'auto',
         backgroundBlendMode: 'normal',
       });
