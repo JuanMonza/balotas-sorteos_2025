@@ -23,7 +23,7 @@
     body {
       box-sizing: border-box;
       overflow: hidden;
-      background-image: url('public/CORTINA_DE_BALOTAS_MARZO_2026.jpg');
+      background-image: url('');
       background-size: 100% 100%;
       background-position: center center;
       background-repeat: no-repeat;
@@ -256,26 +256,29 @@
    </button>
   </div>
   
-  <!-- Botones de carga - Esquina inferior izquierda -->
-  <div style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 12px; align-items: flex-start;">
-    <div class="flex flex-col gap-3">
-      <label for="background-file-input" class="px-6 py-3 rounded-lg font-bold cursor-pointer transition-all transform hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2" style="background: rgba(46, 204, 113, 0.95); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255, 255, 255, 0.2);">
+  <!-- Opciones de carga - Esquina inferior izquierda -->
+  <details class="load-options-menu">
+    <summary class="load-options-toggle">
+      <span>Opciones</span>
+      <svg class="load-options-chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+    </summary>
+
+    <div class="load-options-panel">
+      <label for="background-file-input" class="load-option-item load-option-background">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7"></path><path d="M16 3h-8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"></path><path d="M8 14l2 2 4-4"></path></svg>
         Cargar Fondo
       </label>
       <input type="file" id="background-file-input" accept="image/*" class="hidden">
-      <p id="background-status-fixed" class="text-sm text-white opacity-75" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);"></p>
-    </div>
+      <p id="background-status-fixed" class="load-option-status"></p>
 
-    <div class="flex flex-col gap-3">
-      <label for="excel-file-input" class="px-6 py-3 rounded-lg font-bold cursor-pointer transition-all transform hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2" style="background: rgba(52, 152, 219, 0.9); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255, 255, 255, 0.2);">
+      <label for="excel-file-input" class="load-option-item load-option-data">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
         Cargar Datos
       </label>
       <input type="file" id="excel-file-input" accept=".xlsx,.xls" class="hidden">
-      <p id="excel-status-fixed" class="text-sm text-white opacity-75" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);"></p>
+      <p id="excel-status-fixed" class="load-option-status"></p>
     </div>
-  </div>
+  </details>
   
   <!-- RequireJS para módulos AMD -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
