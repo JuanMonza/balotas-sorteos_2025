@@ -14,7 +14,7 @@ export const DEFAULT_CONFIG: LotteryConfig = {
   font_family: 'system-ui',
   font_size: 16,
   title_text: '',
-  background_image_url: './public/FONDO_SORETO_FEB_2026.jpg',
+  background_image_url: '',
   button_text: 'INICIAR SORTEO',
   winner_label: '¡GANADOR!',
   no_winner_label: 'No Ganador',
