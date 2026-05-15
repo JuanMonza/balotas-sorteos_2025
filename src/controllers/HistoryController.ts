@@ -32,7 +32,7 @@ export class HistoryController {
    * Adjunta los event listeners
    */
   private attachEventListeners(): void {
-    this.clearButton?.addEventListener('click', () => this.handleClearHistory());
+    this.clearButton?.addEventListener('click', () => void this.handleClearHistory());
   }
 
   /**
@@ -120,21 +120,100 @@ export class HistoryController {
   /**
    * Maneja la limpieza del historial
    */
-  private handleClearHistory(): void {
-    const confirmClear = confirm('¿Estás seguro de que quieres eliminar todos los registros del historial?');
-    
-    if (confirmClear) {
-      // Limpiar localStorage
-      localStorage.removeItem('sorteo_jardines_records');
-      
-      // Limpiar la vista
-      this.clear();
-      
-      // Mostrar mensaje de confirmación temporal
-      setTimeout(() => {
-        alert('Historial limpiado correctamente');
-      }, 100);
+  private async handleClearHistory(): Promise<void> {
+    const confirmClear = await this.showClearConfirmation();
+
+    if (!confirmClear) {
+      return;
     }
+
+    localStorage.removeItem('sorteo_jardines_records');
+    this.clear();
+    this.showHistoryToast('Historial limpiado correctamente');
+  }
+
+  /**
+   * Muestra confirmación estilizada antes de borrar el historial
+   */
+  private showClearConfirmation(): Promise<boolean> {
+    return new Promise((resolve) => {
+      document.querySelector('.history-dialog-backdrop')?.remove();
+
+      const backdrop = DOMUtils.createElement('div', {
+        className: 'history-dialog-backdrop',
+        innerHTML: `
+          <div class="history-dialog" role="dialog" aria-modal="true" aria-labelledby="history-dialog-title">
+            <div class="history-dialog-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </div>
+            <h3 id="history-dialog-title">Limpiar historial</h3>
+            <p>Esta acción eliminará todos los registros guardados del historial.</p>
+            <div class="history-dialog-actions">
+              <button type="button" class="history-dialog-btn secondary" data-action="cancel">Cancelar</button>
+              <button type="button" class="history-dialog-btn danger" data-action="confirm">Sí, limpiar</button>
+            </div>
+          </div>
+        `,
+      });
+
+      document.body.appendChild(backdrop);
+
+      const cancelButton = backdrop.querySelector<HTMLButtonElement>('[data-action="cancel"]');
+      const confirmButton = backdrop.querySelector<HTMLButtonElement>('[data-action="confirm"]');
+
+      const close = (result: boolean) => {
+        document.removeEventListener('keydown', handleEscape);
+        backdrop.classList.add('closing');
+        setTimeout(() => {
+          backdrop.remove();
+          resolve(result);
+        }, 160);
+      };
+
+      const handleEscape = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          close(false);
+        }
+      };
+
+      cancelButton?.addEventListener('click', () => close(false));
+      confirmButton?.addEventListener('click', () => close(true));
+      backdrop.addEventListener('click', (event) => {
+        if (event.target === backdrop) {
+          close(false);
+        }
+      });
+      document.addEventListener('keydown', handleEscape);
+      confirmButton?.focus();
+    });
+  }
+
+  /**
+   * Muestra aviso temporal estilizado
+   */
+  private showHistoryToast(message: string): void {
+    document.querySelector('.history-toast')?.remove();
+
+    const toast = DOMUtils.createElement('div', {
+      className: 'history-toast',
+      innerHTML: `
+        <span class="history-toast-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+        </span>
+        <span>${message}</span>
+      `,
+    });
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.classList.add('visible');
+    }, 10);
+
+    setTimeout(() => {
+      toast.classList.remove('visible');
+      setTimeout(() => toast.remove(), 220);
+    }, 2600);
   }
 
   /**
